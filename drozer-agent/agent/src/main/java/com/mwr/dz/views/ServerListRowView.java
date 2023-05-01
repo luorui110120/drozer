@@ -24,10 +24,11 @@ public class ServerListRowView extends LinearLayout implements Observer, OnCheck
 		
 	}
 	
-	private TextView adb_server_port_field = null;
+	private TextView adb_server_addr_port_field = null;
 	private ConnectorStatusIndicator adb_server_status_indicator = null;
 	private ToggleButton adb_server_toggle_button = null;
 	private Server server_parameters = null;
+	private Context mContext = null;
 	
 	private OnServerViewListener server_view_listener;
 	
@@ -35,13 +36,13 @@ public class ServerListRowView extends LinearLayout implements Observer, OnCheck
 	
 	public ServerListRowView(Context context) {
 		super(context);
-		
+		mContext = context;
 		this.initView();
 	}
 
 	public ServerListRowView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
+		mContext = context;
 		this.initView();
 	}
 	
@@ -50,7 +51,7 @@ public class ServerListRowView extends LinearLayout implements Observer, OnCheck
 
         this.setBackgroundResource(android.R.drawable.list_selector_background);
 		
-		this.adb_server_port_field = (TextView)this.findViewById(R.id.adb_server_port);
+		this.adb_server_addr_port_field = (TextView)this.findViewById(R.id.adb_server_addr_port);
 		this.adb_server_status_indicator = (ConnectorStatusIndicator)this.findViewById(R.id.adb_server_status_indicator);
 		this.adb_server_toggle_button = (ToggleButton)this.findViewById(R.id.adb_server_toggle);
 		
@@ -67,7 +68,7 @@ public class ServerListRowView extends LinearLayout implements Observer, OnCheck
 		this.setting_server = true;
 		this.server_parameters = server_parameters;
 		
-		this.adb_server_port_field.setText(Integer.valueOf(this.server_parameters.getPort()).toString());
+		this.adb_server_addr_port_field.setText(server_parameters.getIP(mContext) + ":" + Integer.valueOf(this.server_parameters.getPort()).toString());
 		this.adb_server_status_indicator.setConnector(this.server_parameters);
 		this.adb_server_toggle_button.setChecked(this.server_parameters.isEnabled());
 		this.setting_server = false;

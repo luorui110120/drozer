@@ -55,6 +55,7 @@ public class ServerActivity extends ConnectorActivity implements Observer, Serve
         this.server_status_indicator = (ConnectorStatusIndicator)this.findViewById(R.id.server_status_indicator);
         
         this.server_enabled = (CompoundButton)this.findViewById(R.id.server_enabled);
+
         this.server_enabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			@Override
@@ -82,6 +83,10 @@ public class ServerActivity extends ConnectorActivity implements Observer, Serve
         
         
         this.setServerParameters(Agent.getInstance().getServerParameters());
+		if(!server_enabled.isChecked()){
+			server_enabled.setChecked(true);
+		}
+		//ServerActivity.this.startServer();
         this.refreshStatus();
     }
 

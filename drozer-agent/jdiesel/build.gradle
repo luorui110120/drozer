@@ -37,7 +37,8 @@ android {
 
 dependencies {
     compile project(':mwrtls')
-    compile files('lib/protobuf-java-2.6.1.jar')
+    implementation 'com.google.protobuf:protobuf-java:3.8.0'
+    //compile files('lib/protobuf-java-2.6.1.jar')
 }
 
 protobuf {

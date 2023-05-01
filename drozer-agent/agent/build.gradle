@@ -23,4 +23,5 @@ dependencies {
     compile project(':jdiesel')
     compile project(':mwrtls')
     compile project(':mwrandroid')
+    implementation 'com.google.protobuf:protobuf-java:2.6.1'
 }

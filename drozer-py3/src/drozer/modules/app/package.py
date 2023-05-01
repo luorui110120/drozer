@@ -21,8 +21,15 @@ class AttackSurface(common.Assets, common.PackageManager, common.ClassLoader, Mo
     path = ["app", "package"]
     permissions = ["com.mwr.dz.permissions.GET_CONTEXT"]
 
+    def show_info(self, objs, title=""):
+        self.stdout.write("=================" + title + "==================\n")
+        for e in objs:
+            if e.is_exported():
+                self.stdout.write("%s\n" % e)
+        self.stdout.write("======================================\n")
     def add_arguments(self, parser):
-        parser.add_argument("package", help="the identifier of the package to inspect")
+        parser.add_argument("package",  help="the identifier of the package to inspect")
+        parser.add_argument("-i", "--info", type=bool, default=False, help="show all attack info")
 
     def execute(self, arguments):
         if arguments.package is not None:
@@ -35,6 +42,11 @@ class AttackSurface(common.Assets, common.PackageManager, common.ClassLoader, Mo
                 self.stdout.write("  %d broadcast receivers exported\n" % sum(e.is_exported() for e in m.application.receivers))
                 self.stdout.write("  %d content providers exported\n" % sum(e.is_exported() for e in m.application.providers))
                 self.stdout.write("  %d services exported\n" % sum(e.is_exported() for e in m.application.services))
+                if arguments.info:
+                    self.show_info(m.application.activities, 'activitys')
+                    self.show_info(m.application.receivers, 'receivers')
+                    self.show_info(m.application.providers, 'providers')
+                    self.show_info(m.application.services, 'services')
             except ET.ParseError as e:
                 self.stderr.write("%s cannot parse manifest. %s" % (arguments.package, e))
 
@@ -323,7 +335,7 @@ class LaunchIntent(common.PackageManager, common.ClassLoader, Module):
                 flag = flags & (0x0000000F << i*4)
                 if android.Intent.flags.get(key) == flag:
                     out = out + "%s, "%key
-        if out is not "":
+        if out != "":
             return "[%s]"%out[:-2]
         else:
             return "null"

@@ -17,7 +17,7 @@
         android:text="@string/embedded_server"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <TextView
-        android:id="@+id/adb_server_port"
+        android:id="@+id/adb_server_addr_port"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

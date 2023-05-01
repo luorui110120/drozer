@@ -3,15 +3,23 @@ package com.mwr.jdiesel.api.connectors;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
+import java.util.Enumeration;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 public class Server extends Connector {
@@ -22,6 +30,7 @@ public class Server extends Connector {
 	public static final String SERVER_PASSWORD = "server:password";
 	public static final String SERVER_PORT = "server:port";
 	public static final String SERVER_SSL = "server:ssl";
+
 
 	public interface OnChangeListener {
 
@@ -41,6 +50,7 @@ public class Server extends Connector {
 	private char[] keystore_password = null;
 	private OnChangeListener on_change_listener = null;
 	private String password = null;
+	private String ip = null;
 	private int port = 31415;
 	private boolean ssl = false;
 	
@@ -72,6 +82,40 @@ public class Server extends Connector {
 
 	public int getPort() {
 		return this.port;
+	}
+
+	// 获取本机ip
+	public String getIP(Context context){
+		if(null == ip){
+			// 获取WiFi服务
+			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			// 判断WiFi是否开启
+			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+			int ipAddress = wifiInfo.getIpAddress();
+			ip = (ipAddress & 0xFF) + "." +
+					((ipAddress >> 8) & 0xFF) + "." +
+					((ipAddress >> 16) & 0xFF) + "." +
+					(ipAddress >> 24 & 0xFF);
+
+//			try {
+//				for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+//					NetworkInterface intf = en.nextElement();
+//					for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
+//					{
+//						InetAddress inetAddress = enumIpAddr.nextElement();
+//						if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address))
+//						{
+//							ip = inetAddress.getHostAddress().toString();
+//						}
+//					}
+//				}
+//			}
+//			catch (SocketException ex){
+//				ex.printStackTrace();
+//			}
+		}
+
+		return ip;
 	}
 	
 	public boolean hasPassword() {
