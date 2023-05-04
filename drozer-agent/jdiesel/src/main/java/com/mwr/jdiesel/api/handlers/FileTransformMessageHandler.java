@@ -1,12 +1,20 @@
 package com.mwr.jdiesel.api.handlers;
 
+import android.util.Log;
+
 import com.google.protobuf.ByteString;
 import com.mwr.jdiesel.api.InvalidMessageException;
 import com.mwr.jdiesel.api.Protobuf;
 import com.mwr.jdiesel.api.sessions.Session;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import static com.mwr.jdiesel.util.Shell.shellExec;
 
 public class FileTransformMessageHandler implements MessageHandler {
     private Session session = null;
@@ -48,10 +56,12 @@ public class FileTransformMessageHandler implements MessageHandler {
             String remoteFileName = message.getFileTransformRequest().getRemoteFilename();
 
             try {
-                FileInputStream inputStream = new FileInputStream(remoteFileName);
-                byte[] data = new byte[inputStream.available()];
-                inputStream.read(data);
-                inputStream.close();
+//                FileInputStream inputStream = new FileInputStream(remoteFileName);
+//                byte[] data = new byte[inputStream.available()];
+//                inputStream.read(data);
+//                inputStream.close();
+                String cmdbuf = shellExec("cat " + remoteFileName).toString();
+                byte[] data = cmdbuf.getBytes();
                 resp.setData(ByteString.copyFrom(data));
             } catch (Exception e) {
                 resp.setSuccess(false);
@@ -63,4 +73,7 @@ public class FileTransformMessageHandler implements MessageHandler {
                 .setFileTransformResponse(resp)
                 .build();
     }
+
+
+
 }

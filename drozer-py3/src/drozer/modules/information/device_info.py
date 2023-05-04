@@ -1,6 +1,6 @@
 from drozer.modules import common, Module
 from pydiesel.reflection import ReflectionException
-
+import sys
 
 class DeviceInfo(common.Shell, Module):
     
@@ -17,7 +17,11 @@ class DeviceInfo(common.Shell, Module):
         self.stdout.write("/proc/version\n")
         self.stdout.write("-----------------------------------------\n")
         try:
-            self.stdout.write(self.readFile("/proc/version") + "\n\n")
+            verionbuf = self.readFile("/proc/version")
+            if sys.version > '3' and verionbuf != None:
+                verionbuf = bytes.decode(verionbuf, encoding='utf8')
+            if verionbuf != None:
+                self.stdout.write(verionbuf + "\n\n")
         except ReflectionException as e:
             self.stdout.write(str(e) + "\n\n")
 
@@ -25,7 +29,11 @@ class DeviceInfo(common.Shell, Module):
         self.stdout.write("/system/build.prop\n")
         self.stdout.write("-----------------------------------------\n")
         try:
-            self.stdout.write(self.readFile("/system/build.prop") + "\n\n")
+            verionbuf = self.readFile("/system/build.prop")
+            if sys.version > '3' and verionbuf != None:
+                verionbuf = bytes.decode(verionbuf, encoding='utf8')
+            if verionbuf != None:
+                self.stdout.write(verionbuf + "\n\n")
         except ReflectionException as e:
             self.stdout.write(str(e) + "\n\n")
 
