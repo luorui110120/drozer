@@ -83,6 +83,7 @@ public class ServerActivity extends ConnectorActivity implements Observer, Serve
         
         
         this.setServerParameters(Agent.getInstance().getServerParameters());
+
 		if(!server_enabled.isChecked()){
 			server_enabled.setChecked(true);
 		}

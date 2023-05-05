@@ -49,12 +49,12 @@ public class LogMessageRowView extends LinearLayout {
 			
 		case LogMessage.INFO:
 			this.message_label.setText(R.string.log_level_tag_info);
+			this.message_label.setTextColor(0xffffffff);
 			break;
 			
 		case LogMessage.VERBOSE:
 			this.message_label.setText(R.string.log_level_tag_verbose);
-			this.message_label.setBackgroundColor(0xff00ff00);
-			this.message_label.setTextColor(0xff000000);
+			this.message_label.setTextColor(0xffffffff);
 			break;
 			
 		case LogMessage.WARN:
@@ -74,6 +74,9 @@ public class LogMessageRowView extends LinearLayout {
 		
 		this.setLevel(this.message.getLevel());
 		this.message_message.setText(this.message.getMessage());
+		////修改字体颜色与背景
+		//this.message_message.setBackgroundColor(0xffffa500);
+		this.message_message.setTextColor(0xffffffff);
 	}
 	
 	private void setUpView() {
@@ -81,6 +84,7 @@ public class LogMessageRowView extends LinearLayout {
 		
 		this.message_label = (TextView)this.findViewById(R.id.log_message_level);
 		this.message_message = (TextView)this.findViewById(R.id.log_message_message);
+
 	}
 
 }

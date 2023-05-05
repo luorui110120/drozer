@@ -204,7 +204,9 @@ public class ServerService extends ConnectorService {
 			(new ServerSettings()).load(this.server_parameters);
 			
 			this.server_parameters.enabled = true;
+			this.server_parameters.getIP(this);
 			this.server = new Server(this.server_parameters, Agent.getInstance().getDeviceInfo());
+
 			this.server.setLogger(this.server_parameters.getLogger());
 			this.server_parameters.getLogger().addOnLogMessageListener(this);
 			

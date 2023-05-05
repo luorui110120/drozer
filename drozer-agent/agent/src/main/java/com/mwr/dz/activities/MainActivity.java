@@ -11,13 +11,15 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	
+
+	private static boolean sInitStartServer = true;
 	private EndpointListView endpoint_list_view = null;
 	private ServerListRowView server_list_row_view = null;
 	
@@ -80,6 +82,7 @@ public class MainActivity extends Activity {
 			}
 			
 		});
+
     }
     
     @Override
@@ -110,6 +113,8 @@ public class MainActivity extends Activity {
     	super.onPause();
     	
     	Agent.getInstance().unbindServices();
+
+
     }
     
     @Override
@@ -117,6 +122,21 @@ public class MainActivity extends Activity {
     	super.onResume();
     	
     	Agent.getInstance().bindServices();
+		if(!Agent.getInstance().getServerService().isBound() && sInitStartServer){
+			new Thread(new Runnable() {
+				public void run() {
+					sInitStartServer = false;
+					//sleep设置的是时长
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					MainActivity.this.launchServerActivity();
+				}
+			}).start();
+		}
+
     }
     
     private void startServer(){

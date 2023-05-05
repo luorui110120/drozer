@@ -87,6 +87,9 @@ public class Server extends Connector {
 	// 获取本机ip
 	public String getIP(Context context){
 		if(null == ip){
+			if(context == null){
+				return "";
+			}
 			// 获取WiFi服务
 			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			// 判断WiFi是否开启
@@ -174,6 +177,10 @@ public class Server extends Connector {
 
 		if(this.on_change_listener != null)
 			this.on_change_listener.onChange(this);
+	}
+
+	public void setIp(String ip){
+		this.ip = ip;
 	}
 	
 	@Override

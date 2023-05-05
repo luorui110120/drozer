@@ -67,8 +67,9 @@ public class Server extends Link {
 			try {
 				if(this.connection == null) {
 					this.parameters.setStatus(com.mwr.jdiesel.api.connectors.Server.Status.CONNECTING);
-					
-					this.log(LogMessage.INFO, "Attempting to bind to port " + ((com.mwr.jdiesel.api.connectors.Server)this.parameters).getPort() + "...");
+
+					com.mwr.jdiesel.api.connectors.Server ser = ((com.mwr.jdiesel.api.connectors.Server)this.parameters);
+					this.log(LogMessage.INFO, "Attempting to bind to port " + ser.getIP(null) + ":" + ser.getPort() + "...");
 					this.server_socket = new ServerSocketFactory().createSocket((com.mwr.jdiesel.api.connectors.Server)this.parameters);
 					
 					this.log(LogMessage.INFO, "Waiting for connections...");
